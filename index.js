@@ -44,8 +44,16 @@ function agregateUrl(Model, url, short_url){
 
 
 const contactSchema = new mongoose.Schema({
-  original_url: String,
-  short_url: Number,
+  original_url: {
+    type:String,
+    required:true,
+    unique:true
+  },
+  short_url: {
+    type:String,
+    required:true,
+    unique:true
+  }
 })
 const ShortUrl = mongoose.model('Url', contactSchema) //mongoose convierte Contact a contacts automaticamente como nombre de la coleccion
 
@@ -119,7 +127,9 @@ app.post('/api/shorturl', (req,res)=>{
   })
 
 app.get('/api/shorturl/:id', (req, res)=>{  
+   //const id = Number(req.params.id)
    const id = req.params.id
+   //console.log('type of id ', typeof id)
    //Conectamos con la base de datos   
    setConnection()
    ShortUrl.findOne({short_url:id}).then(urlFound=>{
